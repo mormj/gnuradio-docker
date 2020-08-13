@@ -1,0 +1,6 @@
+export PATH="$GR/bin:$PATH"
+export PYTHONPATH="$GR/lib/python3.8/site-packages:$GR/lib/python3.8/dist-packages:$GR/lib64/python3.8/site-packages:$GR/lib64/python3.8/dist-packages:$GR/lib/python3/site-packages:$GR/lib/python3/dist-packages:$GR/lib64/python3/site-packages:$GR/lib64/python3/dist-packages:$PYTHONPATH"
+export LD_LIBRARY_PATH="$GR/lib:$GR/lib64/:$LD_LIBRARY_PATH"
+export LIBRARY_PATH="$GR/lib:$GR/lib64/:$LIBRARY_PATH"
+export PKG_CONFIG_PATH="$GR/lib/pkgconfig:$GR/lib64/pkgconfig:$PKG_CONFIG_PATH"
+export PYBOMBS_PREFIX="$GR"
