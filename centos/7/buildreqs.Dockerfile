@@ -1,15 +1,5 @@
 FROM gnuradio_centos_7_base
 
-RUN yum install epel-release -y -q && \
-    # get the new packages from EPEL
-    yum --enablerepo=epel check-update -y; \ 
-    yum install -y \ 
-    boost169-devel
-
-# # RUN yum -y install wget
-# # RUN wget http://repo.enetres.net/enetres.repo -O /etc/yum.repos.d/enetres.repo
-# RUN yum -y install boost169-devel
-
 # enable EPEL for all the newer crazy stuff
 # like CMake 3
 RUN yum install epel-release -y -q && \
@@ -26,7 +16,7 @@ RUN yum install epel-release -y -q && \
     shadow-utils \
     openssl-devel \
     # Build infrastructure
-    # boost-devel \
+    boost-devel \
     python36-devel \
     python-devel \
     cppunit-devel \
@@ -59,6 +49,7 @@ RUN yum install epel-release -y -q && \
     python-mako \
     log4cpp-devel \
     qt5-qtbase-devel \
+    # qt \
     python36-qt5 \
     python36-pyqt5-sip \
     qwt-devel \
@@ -70,6 +61,10 @@ RUN yum install epel-release -y -q && \
     pycairo \
     python36-cairo \
     pango \
+    python-six \
+    python36-six \
+    swig3 \
+    git \
     && \
     yum clean all && \
     rm /usr/bin/python3 && \
@@ -96,29 +91,8 @@ RUN    mkdir -p /src/pybind11 && \
     rm -rf /src/pybind11 && \
     rm -rf /src/build
 
+# For Modtool
+RUN pip3 install click click-plugins
 
-# RUN yum install epel-release -y -q && \
-#     # get the new packages from EPEL
-#     yum --enablerepo=epel check-update -y; \
-#     yum install -y -q \ 
-#     git \ 
-#     wget \
-#     ccache \
-#     cmake3 \
-#     make \
-#     gcc \
-#     gcc-c++ \
-#     python36-pip \
-#     shadow-utils \
-#     openssl-devel
-
-RUN yum install -y -q \
-    git  
-    # wget 
-
-# ## Build boost from source because Centos7 comes with 1.53
-# RUN wget http://sourceforge.net/projects/boost/files/boost/1.58.0/boost_1_58_0.tar.gz && \
-#     tar -zxvf boost_1_58_0.tar.gz && \
-#     cd boost_1_58_0 && \
-#     ./bootstrap.sh && \
-#     ./b2 install
+# Hack due to mismatched QT/QWT versions
+RUN sed -i 's/QT_STATIC_CONST/static const/g' /usr/include/qwt/qwt_transform.h
