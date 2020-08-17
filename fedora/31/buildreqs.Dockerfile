@@ -59,6 +59,7 @@ RUN dnf install -y \
     gtk3 \
     python3-cairo \
     pango \
+    swig \
     && \
     dnf clean all && \
     echo "max_size = 20G" > /etc/ccache.conf
@@ -77,5 +78,3 @@ RUN dnf install -y \
 RUN dnf install -y \
     castxml
 
-RUN pip3 install pygccxml
-# RUN pip3 install castxml pygccxml

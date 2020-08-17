@@ -2,7 +2,11 @@ ARG DISTRO
 ARG VERSION
 FROM gnuradio-maint-3.8_${DISTRO}_${VERSION}_buildreqs
 
+
+
 ENV GR /gr
+COPY ./setup_env.sh $GR/
+
 ENV GR_SRC /gr/src/gnuradio
 
 RUN mkdir -p $GR && mkdir -p $GR_SRC
@@ -17,4 +21,3 @@ RUN cd $GR_SRC && mkdir build && cd build && \
 RUN cd $GR_SRC/build && make -j4
 RUN cd $GR_SRC/build && make install
 
-# COPY ./setup_env.sh /
