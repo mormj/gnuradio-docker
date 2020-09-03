@@ -20,5 +20,8 @@ elif [ "$3" = "source" ]; then
     cd build/
     docker build --build-arg DISTRO=$1 --build-arg VERSION=$2 -t gnuradio-maint-3.8_$1_$2_source -f source.Dockerfile .
 elif [ "$3" = "pkg" ]; then
-    docker build -t gnuradio-maint-3.8_$1_$2_pkg -f ./$1/$2/pkg.Dockerfile .
+    cp ./$1/$2/base.Dockerfile build/
+    cp ./$1/common/pkg.Dockerfile build/
+    cd build/
+    docker build --build-arg DISTRO=$1 --build-arg VERSION=$2 -t gnuradio-maint-3.8_$1_$2_pkg -f pkg.Dockerfile .
 fi
