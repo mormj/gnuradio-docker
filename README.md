@@ -27,6 +27,8 @@ For example I may want to build and launch a docker with Ubuntu 20.04
 ./buildDocker ubuntu 20.04 source
 ... (wait for a while to build)
 ./startDocker ubuntu 20.04 source
+./setup_env.sh
+./gnuradio-companion &
 ```
 
 ## Structure of Dockerfiles
