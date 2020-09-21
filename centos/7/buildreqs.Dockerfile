@@ -1,10 +1,10 @@
 FROM gnuradio_centos_7_base
 
-RUN yum install epel-release -y -q && \
-    # get the new packages from EPEL
-    yum --enablerepo=epel check-update -y; \ 
-    yum install -y \ 
-    boost169-devel
+# RUN yum install epel-release -y -q && \
+#     # get the new packages from EPEL
+#     yum --enablerepo=epel check-update -y; \ 
+#     yum install -y \ 
+#     boost169-devel
 
 # # RUN yum -y install wget
 # # RUN wget http://repo.enetres.net/enetres.repo -O /etc/yum.repos.d/enetres.repo
@@ -16,7 +16,6 @@ RUN yum install epel-release -y -q && \
     # get the new packages from EPEL
     yum --enablerepo=epel check-update -y; \
     yum install -y \
-    # General building
     ccache \
     cmake3 \
     make \
@@ -25,33 +24,21 @@ RUN yum install epel-release -y -q && \
     python36-pip \
     shadow-utils \
     openssl-devel \
-    # Build infrastructure
-    # boost-devel \
     python36-devel \
     python-devel \
     cppunit-devel \
-    # Documentation
     doxygen \
     doxygen-latex \
     graphviz \
-    # Math libraries
     fftw-devel \
     gsl-devel \
-    numpy \
-    # scipy \
-    python36-scipy \
     gmp-devel \
-    # IO libraries
     SDL-devel \
     alsa-lib-devel \
     portaudio-devel \
     cppzmq-devel \
     python36-zmq \
     uhd-devel \
-    # ctrlport - thrift
-    # thrift \
-    # thrift-devel \
-    # GUI libraries
     xdg-utils \
     python36-lxml \
     pygtk2-devel \
@@ -59,10 +46,10 @@ RUN yum install epel-release -y -q && \
     python-mako \
     log4cpp-devel \
     qt5-qtbase-devel \
+    python36-six \
     python36-qt5 \
     python36-pyqt5-sip \
     qwt-devel \
-    # GRC/next
     PyYAML \
     python36-PyYAML \
     gtk3 \
@@ -70,13 +57,14 @@ RUN yum install epel-release -y -q && \
     pycairo \
     python36-cairo \
     pango \
+    libsndfile-devel \
     && \
     yum clean all && \
     rm /usr/bin/python3 && \
     ln -s /usr/bin/python3.6 /usr/bin/python3
+
 # download all the source RPMs we'll build later
 RUN     cd && \
-    # symlink cmake3 and ctest3 to cmake / ctest
     cd /usr/bin && \
     ln -s ctest3 ctest && \
     ln -s cmake3 cmake && \
@@ -112,13 +100,24 @@ RUN    mkdir -p /src/pybind11 && \
 #     shadow-utils \
 #     openssl-devel
 
-RUN yum install -y -q \
-    git  
-    # wget 
+# Hack due to mismatched QT/QWT versions
+RUN sed -i 's/QT_STATIC_CONST/static const/g' /usr/include/qwt/qwt_transform.h
 
-# ## Build boost from source because Centos7 comes with 1.53
-# RUN wget http://sourceforge.net/projects/boost/files/boost/1.58.0/boost_1_58_0.tar.gz && \
-#     tar -zxvf boost_1_58_0.tar.gz && \
-#     cd boost_1_58_0 && \
-#     ./bootstrap.sh && \
-#     ./b2 install
+
+RUN yum install -y -q \
+    git  \
+    wget 
+
+RUN pip3 install numpy scipy click click-plugins
+
+## Build boost from source because Centos7 comes with 1.53
+RUN wget http://sourceforge.net/projects/boost/files/boost/1.58.0/boost_1_58_0.tar.gz && \
+    tar -zxvf boost_1_58_0.tar.gz && \
+    cd boost_1_58_0 && \
+    ./bootstrap.sh 
+    # && \
+    # ./b2 install
+
+
+RUN cd /boost_1_58_0 && \
+    ./b2 install --with-system --with-filesystem --with-program_options --with-date_time --with-regex --with-thread --with-chrono --with-atomic
