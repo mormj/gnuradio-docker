@@ -101,7 +101,7 @@ RUN    mkdir -p /src/pybind11 && \
 #     openssl-devel
 
 # Hack due to mismatched QT/QWT versions
-RUN sed -i 's/QT_STATIC_CONST/static const/g' /usr/include/qwt/qwt_transform.h
+# RUN sed -i 's/QT_STATIC_CONST/static const/g' /usr/include/qwt/qwt_transform.h
 
 
 RUN yum install -y -q \
@@ -120,4 +120,4 @@ RUN wget http://sourceforge.net/projects/boost/files/boost/1.58.0/boost_1_58_0.t
 
 
 RUN cd /boost_1_58_0 && \
-    ./b2 install --with-system --with-filesystem --with-program_options --with-date_time --with-regex --with-thread --with-chrono --with-atomic
+    ./b2 install --with-system --with-filesystem --with-program_options --with-date_time --with-regex --with-thread --with-chrono --with-atomic --with-test
