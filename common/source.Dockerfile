@@ -1,6 +1,6 @@
 ARG DISTRO
 ARG VERSION
-FROM gnuradio_${DISTRO}_${VERSION}_buildreqs
+FROM gnuradio-master_${DISTRO}_${VERSION}_buildreqs
 
 ENV GR /gr
 ENV GR_SRC /gr/src/gnuradio
@@ -8,7 +8,7 @@ ENV GR_SRC /gr/src/gnuradio
 RUN mkdir -p $GR && mkdir -p $GR_SRC
 
 ## Build Volk
-RUN cd $GR/src/ && git clone https://github.com/gnuradio/volk.git && cd volk && \
+RUN cd $GR/src/ && git clone https://github.com/gnuradio/volk.git --recurse-submodules && cd volk && \
     mkdir build && cd build && \
     cmake .. -DCMAKE_INSTALL_PREFIX=$GR && \
     make install -j4
