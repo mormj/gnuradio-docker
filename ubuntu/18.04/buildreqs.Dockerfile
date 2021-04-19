@@ -7,10 +7,7 @@ RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get upgrade -y && \
     DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -y && \
     DEBIAN_FRONTEND=noninteractive apt-get install -qy \
-    libthrift-dev \
-    thrift-compiler \
-    libcodec2-dev \
-    thrift-compiler
+    libcodec2-dev
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -qy \
     cmake \
@@ -44,7 +41,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -qy \
     libxrender-dev \
     libzmq3-dev \
     portaudio19-dev \
-    pybind11-dev \
     python3-click \
     python3-click-plugins \
     python3-dev \
@@ -68,13 +64,18 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -qy \
     libgtk-3-dev \
     vim
 
-
 ## Optional dependencies
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -qy \
     python3-scipy \
-    python3-matplotlib
+    python3-matplotlib \ 
+    castxml
 
-RUN pip3 install pygccxml castxml
+RUN pip3 install pygccxml 
 
+
+# Install Pybind11
+RUN mkdir -p /src/build
+RUN git clone --recursive https://github.com/pybind/pybind11.git /src/pybind11 --branch v2.5.0
+RUN cd /src/build && cmake -DPYBIND11_TEST=OFF /src/pybind11 && make install && rm -rf /src/
 
 #TODO - pybind11 from source
