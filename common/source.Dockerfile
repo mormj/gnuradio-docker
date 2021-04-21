@@ -1,6 +1,6 @@
 ARG DISTRO
 ARG VERSION
-FROM gnuradio-master_${DISTRO}_${VERSION}_buildreqs
+FROM gnuradio-maint-3.9_${DISTRO}_${VERSION}_buildreqs
 
 ENV GR /gr
 ENV GR_SRC /gr/src/gnuradio
@@ -16,7 +16,8 @@ RUN cd $GR/src/ && git clone https://github.com/gnuradio/volk.git --recurse-subm
 ## Build GNU Radio
 
 
-RUN cd $GR/src && git clone https://github.com/gnuradio/gnuradio.git
+RUN cd $GR/src && git clone https://github.com/gnuradio/gnuradio.git 
+RUN cd $GR_SRC && git checkout maint-3.9
 
 RUN cd $GR_SRC && mkdir build && cd build && \
     cmake .. -DCMAKE_INSTALL_PREFIX=$GR \

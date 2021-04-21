@@ -5,7 +5,7 @@ if [ "$3" = "base" ]; then
     NAME="gnuradio"
     echo "${NAME}_${1}_${2}_${3}"
 else
-    NAME=gnuradio-master
+    NAME=gnuradio-maint-3.9
     echo "${NAME}_${1}_${2}_${3}"
 fi
 
